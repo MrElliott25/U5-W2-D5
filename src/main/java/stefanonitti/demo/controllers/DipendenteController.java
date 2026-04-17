@@ -21,7 +21,7 @@ public class DipendenteController {
     @GetMapping
     public Page<Dipendente> getAllEmployees(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "cognome") String sortBy) {
         return dipendenteService.findAll(page, size, sortBy);
     }
