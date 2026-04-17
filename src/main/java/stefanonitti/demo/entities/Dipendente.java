@@ -21,5 +21,8 @@ public class Dipendente {
     private String username;
     private String nome;
     private String cognome;
+    @Column(unique = true)
     private String email;
+    @Column(name = "profile_picture_url")
+    private String propicUrl;
 }

@@ -1,14 +1,19 @@
 package stefanonitti.demo.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import stefanonitti.demo.entities.Dipendente;
+import stefanonitti.demo.exceptions.ValidationException;
 import stefanonitti.demo.payloads.DipendenteDTO;
 import stefanonitti.demo.services.DipendenteService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +33,11 @@ public class DipendenteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Dipendente createEmployee(@RequestBody @Validated DipendenteDTO request) {
+    public Dipendente createEmployee(@RequestBody @Validated DipendenteDTO request, BindingResult validationResult) {
+        if(validationResult.hasErrors()){
+            List<String> errors = validationResult.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
+            throw new ValidationException(errors);
+        }
         Dipendente d = new Dipendente();
         d.setUsername(request.username());
         d.setNome(request.nome());
@@ -58,5 +67,11 @@ public class DipendenteController {
         dettagli.setEmail(request.email());
 
         return dipendenteService.update(id, dettagli);
+    }
+
+    @PatchMapping("/{id}/avatar")
+    @ResponseStatus(HttpStatus.OK)
+    public void uploadAvatar(@PathVariable UUID id, @RequestParam("file") MultipartFile file) {
+        dipendenteService.avatarUpload(file, id);
     }
 }
