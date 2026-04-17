@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import stefanonitti.demo.entities.Prenotazione;
+import stefanonitti.demo.exceptions.NotFoundException;
 import stefanonitti.demo.repositories.PrenotazioneRepository;
 
 @Service
@@ -30,7 +31,7 @@ public class PrenotazioneService {
 
     public Prenotazione findById(Long id) {
         return prenotazioneRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Prenotazione con id " + id + " non trovata"));
+                .orElseThrow(() -> new NotFoundException(id));
     }
 
     public Prenotazione update(Long id, Prenotazione prenotazioneDettagli) {

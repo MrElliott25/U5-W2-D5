@@ -7,12 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import stefanonitti.demo.entities.Dipendente;
 import stefanonitti.demo.entities.Viaggio;
 import stefanonitti.demo.exceptions.ValidationException;
 import stefanonitti.demo.payloads.ViaggioDTO;
 import stefanonitti.demo.services.ViaggioService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/travels")
@@ -27,6 +29,11 @@ public class ViaggioController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "data") String sortBy) {
         return viaggioService.findAll(page, size, sortBy);
+    }
+
+    @GetMapping("/{id}")
+    public Viaggio getById(@PathVariable Long id) {
+        return viaggioService.findById(id);
     }
 
     @PostMapping

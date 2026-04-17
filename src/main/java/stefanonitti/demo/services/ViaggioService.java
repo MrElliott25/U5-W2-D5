@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import stefanonitti.demo.entities.Viaggio;
+import stefanonitti.demo.exceptions.NotFoundException;
 import stefanonitti.demo.repositories.ViaggioRepository;
 
 @Service
@@ -25,7 +26,7 @@ public class ViaggioService {
 
     public Viaggio findById(Long id) {
         return viaggioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Viaggio con id " + id + " non trovato"));
+                .orElseThrow(() -> new NotFoundException(id));
     }
 
     public Viaggio update(Long id, Viaggio viaggioDettagli) {

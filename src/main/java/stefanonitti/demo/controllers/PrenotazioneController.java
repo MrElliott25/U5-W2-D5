@@ -38,6 +38,11 @@ public class PrenotazioneController {
         return prenotazioneService.findAll(page, size, sortBy);
     }
 
+    @GetMapping("/{id}")
+    public Prenotazione getById(@PathVariable Long id) {
+        return prenotazioneService.findById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Prenotazione createReservation(@RequestBody @Validated PrenotazioneDTO request, BindingResult validationResult) {
